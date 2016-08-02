@@ -1,7 +1,7 @@
 # Личный проект «Код и Магия» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Прохорова Анастасия](https://up.htmlacademy.ru/javascript/6/user/70416).
-* Наставник: `Неизвестно`.
+* Наставник: `<a href="https://htmlacademy.ru/profile/id189351">Сергей Катревич</a>`.
 
 ---
 
