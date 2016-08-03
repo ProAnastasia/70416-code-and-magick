@@ -16,9 +16,9 @@ function getMessage(a, b) {
             break;
         case 'array':
             if (Array.isArray(b)) {
-               return 'Я прошёл ' + getDistancePath(a, b) + ' метров';
+                return 'Я прошёл ' + getDistancePath(a, b) + ' метров';
             } else {
-               return 'Я прошёл ' + getNumberOfSteps(a) + ' шагов';
+                return 'Я прошёл ' + getNumberOfSteps(a) + ' шагов';
             }
             break;
         default:
@@ -35,7 +35,7 @@ function getMessage(a, b) {
         var temp = [];
 
         for (var i = 0; i < one.length; i++) {
-            temp.push(one[i]*two[i]);
+            temp.push(one[i] * two[i]);
         }
 
         return temp.reduce( function(val, elem) {
