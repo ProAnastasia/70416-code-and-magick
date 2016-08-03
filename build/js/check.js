@@ -1,28 +1,29 @@
 function getMessage(a, b) {
     var type = (typeof a === 'boolean') ? 'boolean' :
                (typeof a === 'number') ? 'number' :
-               (Array.isArray(a)) ? 'array' : false;
+               (Array.isArray(a)) ? 'array' : false,
+        result;
 
     switch(type) {
         case 'boolean':
             if (a) {
-                return 'Я попал в ' + b;
+                result =  'Я попал в ' + b;
             } else {
-                return 'Я никуда не попал';
+                result = 'Я никуда не попал';
             }
             break;
         case 'number':
-            return 'Я прыгнул на ' + a * 100 + ' сантиметров';
+            result = 'Я прыгнул на ' + a * 100 + ' сантиметров';
             break;
         case 'array':
             if (Array.isArray(b)) {
-                return 'Я прошёл ' + getDistancePath(a, b) + ' метров';
+                result = 'Я прошёл ' + getDistancePath(a, b) + ' метров';
             } else {
-                return 'Я прошёл ' + getNumberOfSteps(a) + ' шагов';
+                result = 'Я прошёл ' + getNumberOfSteps(a) + ' шагов';
             }
             break;
         default:
-            return false;
+            result = false;
     }
 
     function getNumberOfSteps(arr) {
@@ -42,4 +43,6 @@ function getMessage(a, b) {
             return val + elem;
         }, 0);
     }
+
+    return result;
 }
