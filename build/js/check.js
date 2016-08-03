@@ -16,11 +16,13 @@ function getMessage(a, b) {
             break;
         case 'array':
             if (Array.isArray(b)) {
-                return 'Я прошёл ' + getDistancePath(a, b) + ' метров';
+               return 'Я прошёл ' + getDistancePath(a, b) + ' метров';
             } else {
                return 'Я прошёл ' + getNumberOfSteps(a) + ' шагов';
             }
             break;
+        default:
+            return false;
     }
 
     function getNumberOfSteps(arr) {
