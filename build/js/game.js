@@ -397,18 +397,76 @@ window.Game = (function() {
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          this._drawMessage(this.ctx, this.canvas.width, this.canvas.height, 'Congratulations! You have achieved the goal!', 250);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          this._drawMessage(this.ctx, this.canvas.width, this.canvas.height, 'You shall not pass!', 250);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          this._drawMessage(this.ctx, this.canvas.width, this.canvas.height, 'Game is paused. Just press SPACE to return', 250);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          this._drawMessage(this.ctx, this.canvas.width, this.canvas.height, 'I\'m a wizard who can make your dreams come true', 250);
           break;
       }
+    },
+
+    _drawMessage: function(ctx, x, y, text, width) {
+      var words = text.split(' ');
+      var countWords = words.length;
+      var line = '';
+      var lineHeight = 25;
+      var marginTop = y / 4;
+      var marginLeft = x / 3;
+
+      //set text options
+      ctx.font = '16px PT Mono';
+      ctx.textBaseline = 'hanging';
+
+      //draw shadow
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.beginPath();
+      ctx.moveTo(x / 2 + 10, y / 2 + 10);
+      ctx.lineTo(x / 4 + 10, y / 2 + 10);
+      ctx.lineTo(x / 4 + 10, y / 6 + 10);
+      ctx.lineTo(x - x / 4 + 10, y / 6 + 10);
+      ctx.lineTo(x - x / 4 + 10, y / 2 + 10);
+      ctx.lineTo(x / 2 + 60, y / 2 + 10);
+      ctx.lineTo(x / 2 + 60, y / 2 + 40);
+      ctx.lineTo(x / 2 + 10, y / 2 + 10);
+      ctx.closePath();
+      ctx.fill();
+      //draw message container
+      ctx.fillStyle = 'white';
+      ctx.strokeStyle = 'white';
+      ctx.beginPath();
+      ctx.moveTo(x / 2, y / 2);
+      ctx.lineTo(x / 4, y / 2);
+      ctx.lineTo(x / 4, y / 6);
+      ctx.lineTo(x - x / 4, y / 6);
+      ctx.lineTo(x - x / 4, y / 2);
+      ctx.lineTo(x / 2 + 50, y / 2);
+      ctx.lineTo(x / 2 + 50, y / 2 + 30);
+      ctx.lineTo(x / 2, y / 2);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fill();
+
+      //iterate the words collection and show them according to string width
+      for (var n = 0; n < countWords; n++) {
+        ctx.fillStyle = '#000';
+        var testLine = line + words[n] + ' ';
+        var testWidth = ctx.measureText(testLine).width;
+
+        if (testWidth > width) {
+          ctx.fillText(line, marginLeft, marginTop);
+          line = words[n] + ' ';
+          marginTop += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, marginLeft, marginTop);
     },
 
     /**
