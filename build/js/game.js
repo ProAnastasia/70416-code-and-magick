@@ -424,34 +424,9 @@ window.Game = (function() {
       ctx.textBaseline = 'hanging';
 
       //draw shadow
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      ctx.beginPath();
-      ctx.moveTo(x / 2 + 10, y / 2 + 10);
-      ctx.lineTo(x / 4 + 10, y / 2 + 10);
-      ctx.lineTo(x / 4 + 10, y / 6 + 10);
-      ctx.lineTo(x - x / 4 + 10, y / 6 + 10);
-      ctx.lineTo(x - x / 4 + 10, y / 2 + 10);
-      ctx.lineTo(x / 2 + 60, y / 2 + 10);
-      ctx.lineTo(x / 2 + 60, y / 2 + 40);
-      ctx.lineTo(x / 2 + 10, y / 2 + 10);
-      ctx.closePath();
-      ctx.fill();
+      toDrawPolygon('rgba(0, 0, 0, 0.7)', 10);
       //draw message container
-      ctx.fillStyle = 'white';
-      ctx.strokeStyle = 'white';
-      ctx.beginPath();
-      ctx.moveTo(x / 2, y / 2);
-      ctx.lineTo(x / 4, y / 2);
-      ctx.lineTo(x / 4, y / 6);
-      ctx.lineTo(x - x / 4, y / 6);
-      ctx.lineTo(x - x / 4, y / 2);
-      ctx.lineTo(x / 2 + 50, y / 2);
-      ctx.lineTo(x / 2 + 50, y / 2 + 30);
-      ctx.lineTo(x / 2, y / 2);
-      ctx.closePath();
-      ctx.stroke();
-      ctx.fill();
-
+      toDrawPolygon('white', 0);
       //iterate the words collection and show them according to string width
       for (var n = 0; n < countWords; n++) {
         ctx.fillStyle = '#000';
@@ -459,7 +434,6 @@ window.Game = (function() {
         var testWidth = ctx.measureText(testLine).width;
 
         if (testWidth > width) {
-          ctx.fillText(line, marginLeft, marginTop);
           line = words[n] + ' ';
           marginTop += lineHeight;
         } else {
@@ -467,6 +441,21 @@ window.Game = (function() {
         }
       }
       ctx.fillText(line, marginLeft, marginTop);
+
+      function toDrawPolygon(fillColor, offset) {
+        ctx.fillStyle = fillColor;
+        ctx.beginPath();
+        ctx.moveTo(x / 2 + offset, y / 2 + offset);
+        ctx.lineTo(x / 4 + offset, y / 2 + offset);
+        ctx.lineTo(x / 4 + offset, y / 6 + offset);
+        ctx.lineTo(x - x / 4 + offset, y / 6 + offset);
+        ctx.lineTo(x - x / 4 + offset, y / 2 + offset);
+        ctx.lineTo(x / 2 + 50 + offset, y / 2 + offset);
+        ctx.lineTo(x / 2 + 50 + offset, y / 2 + 30 + offset);
+        ctx.lineTo(x / 2 + offset, y / 2 + offset);
+        ctx.closePath();
+        ctx.fill();
+      }
     },
 
     /**
