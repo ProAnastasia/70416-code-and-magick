@@ -428,12 +428,13 @@ window.Game = (function() {
       //draw message container
       toDrawPolygon('white', 0);
       //iterate the words collection and show them according to string width
+      ctx.fillStyle = '#000';
       for (var n = 0; n < countWords; n++) {
-        ctx.fillStyle = '#000';
         var testLine = line + words[n] + ' ';
         var testWidth = ctx.measureText(testLine).width;
 
         if (testWidth > width) {
+          ctx.fillText(line, marginLeft, marginTop);
           line = words[n] + ' ';
           marginTop += lineHeight;
         } else {
