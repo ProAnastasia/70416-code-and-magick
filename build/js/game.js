@@ -397,17 +397,65 @@ window.Game = (function() {
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          this._drawMessage(this.ctx, this.canvas.width, this.canvas.height, 'Congratulations! You have achieved the goal!', 250);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          this._drawMessage(this.ctx, this.canvas.width, this.canvas.height, 'You shall not pass!', 250);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          this._drawMessage(this.ctx, this.canvas.width, this.canvas.height, 'Game is paused. Just press SPACE to return', 250);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          this._drawMessage(this.ctx, this.canvas.width, this.canvas.height, 'I\'m a wizard who can make your dreams come true', 250);
           break;
+      }
+    },
+
+    _drawMessage: function(ctx, x, y, text, width) {
+      var words = text.split(' ');
+      var countWords = words.length;
+      var line = '';
+      var lineHeight = 25;
+      var marginTop = y / 4;
+      var marginLeft = x / 3;
+
+      //set text options
+      ctx.font = '16px PT Mono';
+      ctx.textBaseline = 'hanging';
+
+      //draw shadow
+      toDrawPolygon('rgba(0, 0, 0, 0.7)', 10);
+      //draw message container
+      toDrawPolygon('white', 0);
+      //iterate the words collection and show them according to string width
+      ctx.fillStyle = '#000';
+      for (var n = 0; n < countWords; n++) {
+        var testLine = line + words[n] + ' ';
+        var testWidth = ctx.measureText(testLine).width;
+
+        if (testWidth > width) {
+          ctx.fillText(line, marginLeft, marginTop);
+          line = words[n] + ' ';
+          marginTop += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, marginLeft, marginTop);
+
+      function toDrawPolygon(fillColor, offset) {
+        ctx.fillStyle = fillColor;
+        ctx.beginPath();
+        ctx.moveTo(x / 2 + offset, y / 2 + offset);
+        ctx.lineTo(x / 4 + offset, y / 2 + offset);
+        ctx.lineTo(x / 4 + offset, y / 6 + offset);
+        ctx.lineTo(x - x / 4 + offset, y / 6 + offset);
+        ctx.lineTo(x - x / 4 + offset, y / 2 + offset);
+        ctx.lineTo(x / 2 + 50 + offset, y / 2 + offset);
+        ctx.lineTo(x / 2 + 50 + offset, y / 2 + 30 + offset);
+        ctx.lineTo(x / 2 + offset, y / 2 + offset);
+        ctx.closePath();
+        ctx.fill();
       }
     },
 

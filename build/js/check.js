@@ -19,17 +19,11 @@ function getMessage(a, b) {
             if (Array.isArray(b)) {
                 result = 'Я прошёл ' + getDistancePath(a, b) + ' метров';
             } else {
-                result = 'Я прошёл ' + getNumberOfSteps(a) + ' шагов';
+                result = 'Я прошёл ' + getSum(a) + ' шагов';
             }
             break;
         default:
             result = false;
-    }
-
-    function getNumberOfSteps(arr) {
-        return arr.reduce( function(val, elem) {
-            return val + elem;
-        }, 0);
     }
 
     function getDistancePath(one, two) {
@@ -39,9 +33,13 @@ function getMessage(a, b) {
             temp.push(one[i] * two[i]);
         }
 
-        return temp.reduce( function(val, elem) {
+        return getSum(temp);
+    }
+
+    function getSum(arr) {
+        return arr.reduce( function(val, elem) {
             return val + elem;
-        }, 0);
+        });
     }
 
     return result;
