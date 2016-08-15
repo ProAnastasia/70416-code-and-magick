@@ -42,6 +42,7 @@ window.form = (function() {
   };
 
   function checkRequirements() {
+    //depends on this number we will require the review text or not
     var COMPARED_NUMBER = 3;
 
     var selectedMark = formMain.querySelector('input[type=\'radio\']:checked').value;
