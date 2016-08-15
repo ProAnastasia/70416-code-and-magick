@@ -49,17 +49,8 @@ window.form = (function() {
 
     reviewText.required = selectedMark < COMPARED_NUMBER;
 
-    if (isEmptyField(userName)) {
-      hintName.classList.remove('invisible');
-    } else {
-      hintName.classList.add('invisible');
-    }
-
-    if (isEmptyField(reviewText)) {
-      hintDescription.classList.remove('invisible');
-    } else {
-      hintDescription.classList.add('invisible');
-    }
+    toggleVisibility(hintName, isEmptyField(userName));
+    toggleVisibility(hintDescription, isEmptyField(reviewText));
 
     if (!isEmptyField(userName) && !isEmptyField(reviewText)) {
       hintsFields.classList.add('invisible');
@@ -75,6 +66,14 @@ window.form = (function() {
       return false;
     }
     return true;
+  }
+
+  function toggleVisibility(elem, state) {
+    if(state) {
+      elem.classList.remove('invisible');
+    } else {
+      hintName.classList.add('invisible');
+    }
   }
 
   return form;
