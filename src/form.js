@@ -72,7 +72,7 @@ window.form = (function() {
     if(state) {
       elem.classList.remove('invisible');
     } else {
-      hintName.classList.add('invisible');
+      elem.classList.add('invisible');
     }
   }
 
