@@ -3,7 +3,7 @@
 window.form = (function() {
   var formContainer = document.querySelector('.overlay-container');
   var formCloseButton = document.querySelector('.review-form-close');
-  var formMain =  document.querySelector('.review-form');
+  var formMain = document.querySelector('.review-form');
   var userName = formMain.querySelector('.review-form-field-name');
   var reviewText = formMain.querySelector('.review-form-field-text');
   var hintsFields = formMain.querySelector('.review-fields');
