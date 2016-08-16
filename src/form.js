@@ -11,6 +11,9 @@ window.form = (function() {
   var hintDescription = hintsFields.querySelector('.review-fields-text');
   var submitBtn = formMain.querySelector('.review-submit');
 
+  //save invisible class into a const
+  var HIDDEN = 'invisible';
+
   var form = {
     onClose: null,
 
@@ -18,12 +21,12 @@ window.form = (function() {
      * @param {Function} cb
      */
     open: function(cb) {
-      formContainer.classList.remove('invisible');
+      formContainer.classList.remove(HIDDEN);
       cb();
     },
 
     close: function() {
-      formContainer.classList.add('invisible');
+      formContainer.classList.add(HIDDEN);
 
       if (typeof this.onClose === 'function') {
         this.onClose();
@@ -45,34 +48,28 @@ window.form = (function() {
     //depends on this number we will require the review text or not
     var COMPARED_NUMBER = 3;
 
+    //get user's mark
     var selectedMark = formMain.querySelector('input[type=\'radio\']:checked').value;
 
+    //toggle visibility of the name label depends on its input value
+    var isNameValid = !!userName.value;
+    toggleVisibility(hintName, isNameValid);
+
+    //compare user mark with min required number, then check if review is required
     reviewText.required = selectedMark < COMPARED_NUMBER;
 
-    toggleVisibility(hintName, isEmptyField(userName));
-    toggleVisibility(hintDescription, isEmptyField(reviewText));
+    //if review is required, check its value and save result, then toggle its label
+    //because of "short circuit operators" this variable saves true/false for the review if it is required and only true if not
+    var isReviewValid = !reviewText.required || !!(reviewText.value);
+    toggleVisibility(hintDescription, isReviewValid);
 
-    if (!isEmptyField(userName) && !isEmptyField(reviewText)) {
-      hintsFields.classList.add('invisible');
-    } else {
-      hintsFields.classList.remove('invisible');
-    }
+    //depends on fields validation toggle btn and field with hints
+    var bothFieldsValid = isNameValid && isReviewValid;
+    submitBtn.disabled = !bothFieldsValid;
+    toggleVisibility(hintsFields, bothFieldsValid);
 
-    submitBtn.disabled = isEmptyField(userName) || isEmptyField(reviewText);
-  }
-
-  function isEmptyField(input) {
-    if (input.value) {
-      return false;
-    }
-    return true;
-  }
-
-  function toggleVisibility(elem, state) {
-    if(state) {
-      elem.classList.remove('invisible');
-    } else {
-      elem.classList.add('invisible');
+    function toggleVisibility(elem, state) {
+      elem.classList.toggle(HIDDEN, state);
     }
   }
 
