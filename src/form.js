@@ -4,6 +4,7 @@ window.form = (function() {
   var formContainer = document.querySelector('.overlay-container');
   var formCloseButton = document.querySelector('.review-form-close');
   var formMain = document.querySelector('.review-form');
+  var radioBtns = formMain.querySelectorAll('input[type=\'radio\']');
   var userName = formMain.querySelector('.review-form-field-name');
   var reviewText = formMain.querySelector('.review-form-field-text');
   var hintsFields = formMain.querySelector('.review-fields');
@@ -34,10 +35,15 @@ window.form = (function() {
     }
   };
 
+  checkRequirements();
   userName.required = true;
   submitBtn.disabled = true;
   userName.oninput = checkRequirements;
   reviewText.oninput = checkRequirements;
+
+  for (var i = 0; i < radioBtns.length; i++) {
+    radioBtns[i].onchange = checkRequirements;
+  }
 
   formCloseButton.onclick = function(evt) {
     evt.preventDefault();
