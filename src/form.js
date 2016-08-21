@@ -64,7 +64,6 @@ window.form = (function() {
     //get user's mark
     var selectedMark = formMain.querySelector('input[type=\'radio\']:checked').value;
     setCookie('review-mark', selectedMark);
-    console.log(browserCookies.get('user-mark'));
     //toggle visibility of the name label depends on its input value
     var isNameValid = !!userName.value;
     toggleVisibility(hintName, isNameValid);
@@ -88,19 +87,19 @@ window.form = (function() {
   }
 
   function setCookie(name, value) {
-    browserCookies.set(name, value, {expires: setDate()});
+    browserCookies.set(name, value, {expires: setCookiesLifetime()});
   }
 
-  function setDate() {
+  function setCookiesLifetime() {
     var now = new Date();
     var expireDate = new Date();
 
     expireDate.setMonth(11, 9);
 
-    if (expireDate - now <= 0) {
-      expireDate.setFullYear(expireDate.getFullYear() + 1, 11, 9);
+    if (expireDate - now > 0) {
+      expireDate.setFullYear(expireDate.getFullYear() - 1, 11, 9);
     }
-    return (expireDate - now) / (24 * 60 * 60 * 1000);
+    return (now - expireDate) / (24 * 60 * 60 * 1000);
   }
 
   function getCookie() {
