@@ -11,6 +11,8 @@ window.form = (function() {
   var hintName = hintsFields.querySelector('.review-fields-name');
   var hintDescription = hintsFields.querySelector('.review-fields-text');
   var submitBtn = formMain.querySelector('.review-submit');
+  var browserCookies = require('browser-cookies');
+
 
   //save invisible class into a const
   var HIDDEN = 'invisible';
@@ -35,11 +37,16 @@ window.form = (function() {
     }
   };
 
+  getCookie();
   checkRequirements();
   userName.required = true;
   submitBtn.disabled = true;
   userName.oninput = checkRequirements;
   reviewText.oninput = checkRequirements;
+
+  formMain.onsubmit = function() {
+    setCookie('review-name', userName.value);
+  };
 
   for (var i = 0; i < radioBtns.length; i++) {
     radioBtns[i].onchange = checkRequirements;
@@ -56,7 +63,7 @@ window.form = (function() {
 
     //get user's mark
     var selectedMark = formMain.querySelector('input[type=\'radio\']:checked').value;
-
+    setCookie('review-mark', selectedMark);
     //toggle visibility of the name label depends on its input value
     var isNameValid = !!userName.value;
     toggleVisibility(hintName, isNameValid);
@@ -76,6 +83,34 @@ window.form = (function() {
 
     function toggleVisibility(elem, state) {
       elem.classList.toggle(HIDDEN, state);
+    }
+  }
+
+  function setCookie(name, value) {
+    browserCookies.set(name, value, {expires: setCookiesLifetime()});
+  }
+
+  function setCookiesLifetime() {
+    var now = new Date();
+    var expireDate = new Date();
+
+    expireDate.setMonth(11, 9);
+
+    if (expireDate - now > 0) {
+      expireDate.setFullYear(expireDate.getFullYear() - 1, 11, 9);
+    }
+    return (now - expireDate) / (24 * 60 * 60 * 1000);
+  }
+
+  function getCookie() {
+    var name = browserCookies.get('review-name');
+    var mark = browserCookies.get('review-mark');
+
+    userName.value = name;
+    for (var j = 0; j < radioBtns.length; j++) {
+      if (radioBtns[j].value === mark) {
+        radioBtns[j].checked = true;
+      }
     }
   }
 
