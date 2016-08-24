@@ -5,6 +5,7 @@ var REVIEWS_SOURCE = 'http://localhost:1506/api/reviews';
 
 window.loadReviewsCallback = function(responseData) {
   reviews = responseData;
+  console.log(reviews);
 };
 
 function appendScript(url, cb) {
