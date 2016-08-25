@@ -20,13 +20,14 @@
   }
 
   appendScript(REVIEWS_SOURCE, 'loadReviewsCallback');
-  toggleVisibility(reviewsFilter, false);
+  toggleVisibility(reviewsFilter, true);
 
   window.loadReviewsCallback = function(responseData) {
     reviews = responseData;
     reviews.forEach(function(review) {
       getReviewItem(review, reviewsContainer);
     });
+    toggleVisibility(reviewsFilter, false);
   };
 
   function getReviewItem(data, container) {
@@ -34,8 +35,6 @@
     var authorImage = new Image();
     var imageElement = element.querySelector('img');
     var imageLoadTimeout = null;
-
-    authorImage.src = data.author.picture;
 
     authorImage.onload = function(evt) {
       clearTimeout(imageLoadTimeout);
@@ -47,6 +46,8 @@
     authorImage.onerror = function() {
       element.classList.add('review-load-failure');
     };
+
+    authorImage.src = data.author.picture;
 
     element.querySelector('.review-text').textContent = data.description;
     container.appendChild(element);
