@@ -27,14 +27,14 @@ module.exports = function getReviewItem(data, container) {
     element.classList.add('review-load-failure');
   };
 
+  imageLoadTimeout = setTimeout(function() {
+    element.classList.add('hotel-nophoto');
+  }, IMAGE_LOAD_TIMEOUT);
+
   authorImage.src = data.author.picture;
 
   element.querySelector('.review-text').textContent = data.description;
   container.appendChild(element);
-
-  imageLoadTimeout = setTimeout(function() {
-    element.classList.add('hotel-nophoto');
-  }, IMAGE_LOAD_TIMEOUT);
 
   return element;
 };
