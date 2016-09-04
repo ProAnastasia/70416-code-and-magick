@@ -6,19 +6,20 @@ require('./reviews');
 var Gallery = require('./gallery');
 
 /* work with gallery */
-/* get images sources */
 var galleryImages = document.querySelectorAll('.photogallery-image');
 var galleryLength = galleryImages.length;
 var pictures = [];
 
+/* get images sources */
 for (var i = 0; i < galleryLength; i++) {
-  pictures.push(galleryImages[j].querySelector('img').src);
+  pictures.push(galleryImages[i].querySelector('img').src);
 }
 
 var gallery = new Gallery(pictures);
 
+/* assign events handlers to all pics using closures */
 for (var j = 0; j < galleryLength; j++) {
-  showImage(i);
+  showImage(j);
 }
 
 function showImage(num) {
