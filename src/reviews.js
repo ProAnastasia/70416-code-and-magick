@@ -2,21 +2,23 @@
 
 (function() {
   var load = require('./load');
-  var review = require('./review');
+  var Review = require('./review');
   var utils = require('./utils');
 
-  var REVIEWS_SOURCE = 'http://localhost:1506/api/reviews';
+  var REVIEWS_SOURCE = 'http://localhost:1506/api/reviews' + '?callback=' + '<' + 'JSONPCallback' + '>';
 
   var reviewsFilter = document.querySelector('.reviews-filter');
   var reviewsContainer = document.querySelector('.reviews-list');
 
-  window.loadReviewsCallback = function(responseData) {
-    responseData.forEach(function(elem) {
-      review(elem, reviewsContainer);
+
+  var getReviews = function(reviews) {
+    reviews.forEach(function(review) {
+      var newReview = new Review(review);
+      reviewsContainer.appendChild(newReview.element);
     });
     utils.toggleVisibility(reviewsFilter, false);
   };
   utils.toggleVisibility(reviewsFilter, true);
 
-  load(REVIEWS_SOURCE, 'loadReviewsCallback');
+  load(REVIEWS_SOURCE, getReviews);
 })();

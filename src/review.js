@@ -1,40 +1,34 @@
 'use strict';
 
-module.exports = function getReviewItem(data, container) {
-  var reviewTemplate = document.querySelector('template');
-  var authorImage = new Image();
-  var imageLoadTimeout = null;
-  var IMAGE_LOAD_TIMEOUT = 10000;
-  var elementToClone = null;
+var reviewItem = require('./get-review');
 
-  if ('content' in reviewTemplate) {
-    elementToClone = reviewTemplate.content.querySelector('.review');
-  } else {
-    elementToClone = reviewTemplate.querySelector('.review');
-  }
-
-  var element = elementToClone.cloneNode(true);
-  var imageElement = element.querySelector('img');
-
-  authorImage.onload = function(evt) {
-    clearTimeout(imageLoadTimeout);
-    imageElement.width = '124';
-    imageElement.height = '124';
-    imageElement.src = evt.target.src;
+var Review = function(data) {
+  this.data = data;
+  this.element = reviewItem(data);
+  this.quizAnswerYes = this.element.querySelector('.review-quiz-answer-yes');
+  this.quizAnswerNo = this.element.querySelector('.review-quiz-answer-no');
+  var self = this;
+  this.quizAnswerYes.onclick = function() {
+    self.chooseYes();
   };
-
-  authorImage.onerror = function() {
-    element.classList.add('review-load-failure');
+  this.quizAnswerNo.onclick = function() {
+    self.chooseNo();
   };
-
-  imageLoadTimeout = setTimeout(function() {
-    element.classList.add('hotel-nophoto');
-  }, IMAGE_LOAD_TIMEOUT);
-
-  authorImage.src = data.author.picture;
-
-  element.querySelector('.review-text').textContent = data.description;
-  container.appendChild(element);
-
-  return element;
 };
+
+Review.prototype = {
+  chooseYes: function() {
+    this.quizAnswerNo.classList.remove('review-quiz-answer-active');
+    this.quizAnswerYes.classList.add('review-quiz-answer-active');
+  },
+  chooseNo: function() {
+    this.quizAnswerYes.classList.remove('review-quiz-answer-active');
+    this.quizAnswerNo.classList.add('review-quiz-answer-active');
+  },
+  remove: function() {
+    this.quizAnswerYes.onclick = null;
+    this.quizAnswerNo.onclick = null;
+  }
+};
+
+module.exports = Review;
