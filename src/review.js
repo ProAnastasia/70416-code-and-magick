@@ -2,12 +2,15 @@
 
 var reviewItem = require('./get-review');
 
+var ACTIVE = 'review-quiz-answer-active';
+
 var Review = function(data) {
-  this.data = data;
-  this.element = reviewItem(data);
   this.quizAnswerYes = this.element.querySelector('.review-quiz-answer-yes');
   this.quizAnswerNo = this.element.querySelector('.review-quiz-answer-no');
+  this.data = data;
+  this.element = reviewItem(data);
   var self = this;
+  
   this.quizAnswerYes.onclick = function() {
     self.chooseYes();
   };
@@ -18,12 +21,12 @@ var Review = function(data) {
 
 Review.prototype = {
   chooseYes: function() {
-    this.quizAnswerNo.classList.remove('review-quiz-answer-active');
-    this.quizAnswerYes.classList.add('review-quiz-answer-active');
+    this.quizAnswerNo.classList.remove(ACTIVE);
+    this.quizAnswerYes.classList.add(ACTIVE);
   },
   chooseNo: function() {
-    this.quizAnswerYes.classList.remove('review-quiz-answer-active');
-    this.quizAnswerNo.classList.add('review-quiz-answer-active');
+    this.quizAnswerYes.classList.remove(ACTIVE);
+    this.quizAnswerNo.classList.add(ACTIVE);
   },
   remove: function() {
     this.quizAnswerYes.onclick = null;

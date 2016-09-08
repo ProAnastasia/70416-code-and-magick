@@ -1,13 +1,8 @@
 'use strict';
 
-module.exports = (function(url, callback) {
+module.exports = function(url, callback) {
   var script = document.createElement('script');
-  script.src = url;
+  script.src = url + '/?callback=' + callback;
   document.body.appendChild(script);
-  var reviews = [];
+};
 
-  window.JSONPCallback = function(data) {
-    reviews = data;
-    callback(reviews);
-  };
-});
