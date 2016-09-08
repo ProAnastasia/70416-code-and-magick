@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = function appendScript(url, cb) {
+module.exports = function(url, callback) {
   var script = document.createElement('script');
-
-  script.src = url + '?callback=' + cb;
+  script.src = url + '/?callback=' + callback;
   document.body.appendChild(script);
 };
+
