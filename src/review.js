@@ -5,12 +5,15 @@ var reviewItem = require('./get-review');
 var ACTIVE = 'review-quiz-answer-active';
 
 var Review = function(data) {
-  this.quizAnswerYes = this.element.querySelector('.review-quiz-answer-yes');
-  this.quizAnswerNo = this.element.querySelector('.review-quiz-answer-no');
+  var elemYes = '.review-quiz-answer-yes';
+  var elemNo = '.review-quiz-answer-no';
+
   this.data = data;
   this.element = reviewItem(data);
+  this.quizAnswerYes = this.element.querySelector(elemYes);
+  this.quizAnswerNo = this.element.querySelector(elemNo);
   var self = this;
-  
+
   this.quizAnswerYes.onclick = function() {
     self.chooseYes();
   };
