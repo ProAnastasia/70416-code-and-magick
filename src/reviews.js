@@ -26,18 +26,19 @@ var LOAD_REVIEWS_URL = '/api/reviews';
     }
   }, true);
 
+  utils.toggleVisibility(reviewsFilter, true);
+
   function loadData(reviews) {
     if (reviews) {
       var fragment = document.createDocumentFragment();
-
       reviews.forEach(function(review) {
         fragment.appendChild(new Review(review).element);
       });
       reviewsContainer.appendChild(fragment);
       utils.toggleVisibility(reviewsFilter, false);
       utils.toggleVisibility(moreReviews, false);
-    } else {
-      utils.toggleVisibility(reviewsFilter, true);
+    }
+    if (reviews.length === 0) {
       utils.toggleVisibility(moreReviews, true);
     }
   }
