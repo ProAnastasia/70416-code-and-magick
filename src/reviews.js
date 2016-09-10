@@ -14,8 +14,6 @@ var LOAD_REVIEWS_URL = '/api/reviews';
   var PAGE_SIZE = 3;
   var pageNumber = 0;
 
-  utils.toggleVisibility(reviewsFilter, true);
-
   moreReviews.addEventListener('click', function() {
     loadMoreReviews(pageNumber++);
   });
@@ -32,13 +30,14 @@ var LOAD_REVIEWS_URL = '/api/reviews';
     if (reviews) {
       var fragment = document.createDocumentFragment();
 
-      utils.toggleVisibility(reviewsFilter, false);
       reviews.forEach(function(review) {
         fragment.appendChild(new Review(review).element);
       });
       reviewsContainer.appendChild(fragment);
+      utils.toggleVisibility(reviewsFilter, false);
       utils.toggleVisibility(moreReviews, false);
     } else {
+      utils.toggleVisibility(reviewsFilter, true);
       utils.toggleVisibility(moreReviews, true);
     }
   }

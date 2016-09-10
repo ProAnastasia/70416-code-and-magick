@@ -9,9 +9,9 @@ function catchError(text) {
 module.exports = function(request, options, callback) {
   var xhr = new XMLHttpRequest();
   //if one of the options properties is not defined, set default value
-  var from = options.from || 0;
-  var to = options.to || Infinity;
-  var filter = options.filter || 'reviews-all';
+  var from = options.from;
+  var to = options.to;
+  var filter = options.filter;
 
   request += '?from=' + from + '&to=' + to + '&filter=' + filter;
 
