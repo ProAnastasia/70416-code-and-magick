@@ -742,7 +742,43 @@ window.Game = (function() {
     }
   };
 
+  window.Game = Game;
   Game.Verdict = Verdict;
+
+  var demo = document.querySelector('.demo');
+  var game = new Game(demo);
+
+  game.initializeLevelAndStart();
+  game.setGameStatus(window.Game.Verdict.INTRO);
+
+  var clouds = document.querySelector('.header-clouds');
+  var cloudsCoordinates = clouds.getBoundingClientRect();
+
+  var scrollTimeout;
+  var detectCloud = true;
+
+  window.addEventListener('scroll', function() {
+    var scrolled = window.pageYOffset;
+    var demoBottomCoordinate = demo.getBoundingClientRect().bottom;
+
+    clearTimeout(scrollTimeout);
+
+    if (detectCloud) {
+      clouds.style.backgroundPositionX = scrolled + 'px';
+    }
+
+    if (demoBottomCoordinate <= 0) {
+      game.setGameStatus(window.Game.Verdict.PAUSE);
+    }
+
+    scrollTimeout = setTimeout(function() {
+      if (scrolled > cloudsCoordinates.height) {
+        detectCloud = false;
+      } else {
+        detectCloud = true;
+      }
+    }, 100);
+  });
 
   return Game;
 })();

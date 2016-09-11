@@ -38,7 +38,7 @@ var LOAD_REVIEWS_URL = '/api/reviews';
       utils.toggleVisibility(reviewsFilter, false);
       utils.toggleVisibility(moreReviews, false);
     }
-    if (reviews.length === 0) {
+    if (reviews && reviews.length === 0) {
       utils.toggleVisibility(moreReviews, true);
     }
   }
