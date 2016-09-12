@@ -268,6 +268,8 @@ window.Game = (function() {
     this.setDeactivated(false);
   };
 
+
+
   Game.prototype = {
     /**
      * Текущий уровень игры.
@@ -287,13 +289,12 @@ window.Game = (function() {
         clouds.style.backgroundPositionX = scrolled + 'px';
       }
 
-      if (demoBottomCoordinate <= 0) {
-        this.setGameStatus(window.Game.Verdict.PAUSE);
-      }
-
       scrollTimeout = setTimeout(function() {
         if (demoBottomCoordinate <= 0) {
           self.setGameStatus(Verdict.PAUSE);
+        }
+        if (cloudsCoordinates <= 0) {
+          clouds.style.backgroundPositionX = null;
         }
       }, THROTTLE_TIME);
     },
