@@ -248,9 +248,7 @@ window.Game = (function() {
   var THROTTLE_TIME = 100;
 
   var clouds = document.querySelector('.header-clouds');
-  var cloudsCoordinates = clouds.getBoundingClientRect();
   var demo = document.querySelector('.demo');
-  var detectCloud = false;
   var scrollTimeout;
 
   var Game = function(container) {
@@ -279,11 +277,13 @@ window.Game = (function() {
 
     _onScroll: function() {
       var scrolled = window.pageYOffset;
+      var cloudsCoordinates = clouds.getBoundingClientRect().bottom;
       var demoBottomCoordinate = demo.getBoundingClientRect().bottom;
+      var self = this;
 
       clearTimeout(scrollTimeout);
 
-      if (detectCloud) {
+      if (cloudsCoordinates > 0) {
         clouds.style.backgroundPositionX = scrolled + 'px';
       }
 
@@ -292,10 +292,8 @@ window.Game = (function() {
       }
 
       scrollTimeout = setTimeout(function() {
-        if (scrolled > cloudsCoordinates.height) {
-          detectCloud = false;
-        } else {
-          detectCloud = true;
+        if (demoBottomCoordinate <= 0) {
+          self.setGameStatus(Verdict.PAUSE);
         }
       }, THROTTLE_TIME);
     },
