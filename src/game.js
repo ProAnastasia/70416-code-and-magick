@@ -284,19 +284,22 @@ window.Game = (function() {
       var self = this;
 
       clearTimeout(scrollTimeout);
-
-      if (cloudsCoordinates > 0) {
-        clouds.style.backgroundPositionX = scrolled + 'px';
-      }
+      window.addEventListener('scroll', toMoveClouds);
 
       scrollTimeout = setTimeout(function() {
         if (demoBottomCoordinate <= 0) {
           self.setGameStatus(Verdict.PAUSE);
         }
         if (cloudsCoordinates <= 0) {
-          clouds.style.backgroundPositionX = null;
+          window.removeEventListener('scroll', toMoveClouds);
+        } else {
+          window.addEventListener('scroll', toMoveClouds);
         }
       }, THROTTLE_TIME);
+
+      function toMoveClouds() {
+        clouds.style.backgroundPositionX = scrolled + 'px';
+      }
     },
 
     /** @param {boolean} deactivated */
