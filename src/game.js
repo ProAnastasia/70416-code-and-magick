@@ -1,5 +1,7 @@
 'use strict';
 
+var utils = require('./utils');
+
 window.Game = (function() {
   /**
    * @const
@@ -247,9 +249,7 @@ window.Game = (function() {
 
   var THROTTLE_TIME = 100;
 
-
   var demo = document.querySelector('.demo');
-  var scrollTimeout;
 
   var Game = function(container) {
     this.container = container;
@@ -258,7 +258,6 @@ window.Game = (function() {
     this.canvas.height = container.clientHeight;
     this.container.appendChild(this.canvas);
     this.clouds = document.querySelector('.header-clouds');
-    this.clouds.style.backgroundPosition = 'top  ' + 0 + 'px';
 
     this.ctx = this.canvas.getContext('2d');
 
@@ -267,12 +266,12 @@ window.Game = (function() {
     this._pauseListener = this._pauseListener.bind(this);
     this._onScroll = this._onScroll.bind(this);
     this._onCloudsMove = this._cloudsMove.bind(this);
-    window.addEventListener('scroll', this._onCloudsMove);
+
+    this._toThrottleScroll = utils.throttle(this._onScroll.bind(this), THROTTLE_TIME);
+    window.addEventListener('scroll', this._toThrottleScroll);
 
     this.setDeactivated(false);
   };
-
-
 
   Game.prototype = {
     /**
@@ -288,22 +287,18 @@ window.Game = (function() {
     },
 
     _onScroll: function() {
-      var cloudsCoordinates = this.clouds.getBoundingClientRect().bottom;
-      var demoBottomCoordinate = demo.getBoundingClientRect().bottom;
+      var cloudsBottomCoordinate = this.clouds.getBoundingClientRect().bottom;
+      var demoBottomCoordinate = demo.getBoundingClientRect();
       var self = this;
 
-      clearTimeout(scrollTimeout);
-
-      scrollTimeout = setTimeout(function() {
-        if (demoBottomCoordinate <= 0) {
-          self.setGameStatus(Verdict.PAUSE);
-        }
-        if (cloudsCoordinates <= 0) {
-          window.removeEventListener('scroll', self._onCloudsMove);
-        } else {
-          window.addEventListener('scroll', self._onCloudsMove);
-        }
-      }, THROTTLE_TIME);
+      if (demoBottomCoordinate <= 0) {
+        self.setGameStatus(Verdict.PAUSE);
+      }
+      if (cloudsBottomCoordinate <= 0) {
+        window.removeEventListener('scroll', self._onCloudsMove);
+      } else {
+        window.addEventListener('scroll', self._onCloudsMove);
+      }
     },
 
     /** @param {boolean} deactivated */
