@@ -247,7 +247,7 @@ window.Game = (function() {
 
   var THROTTLE_TIME = 100;
 
-  var clouds = document.querySelector('.header-clouds');
+
   var demo = document.querySelector('.demo');
   var scrollTimeout;
 
@@ -257,6 +257,7 @@ window.Game = (function() {
     this.canvas.width = container.clientWidth;
     this.canvas.height = container.clientHeight;
     this.container.appendChild(this.canvas);
+    this.clouds = document.querySelector('.header-clouds');
 
     this.ctx = this.canvas.getContext('2d');
 
@@ -264,6 +265,8 @@ window.Game = (function() {
     this._onKeyUp = this._onKeyUp.bind(this);
     this._pauseListener = this._pauseListener.bind(this);
     this._onScroll = this._onScroll.bind(this);
+    this._onCloudsMove = this._cloudsMove.bind(this);
+    window.addEventListener('scroll', this._onCloudsMove);
 
     this.setDeactivated(false);
   };
@@ -277,29 +280,29 @@ window.Game = (function() {
      */
     level: INITIAL_LEVEL,
 
-    _onScroll: function() {
+    _cloudsMove: function() {
       var scrolled = window.pageYOffset;
-      var cloudsCoordinates = clouds.getBoundingClientRect().bottom;
+
+      this.clouds.style.backgroundPositionX = scrolled + 'px';
+    },
+
+    _onScroll: function() {
+      var cloudsCoordinates = this.clouds.getBoundingClientRect().bottom;
       var demoBottomCoordinate = demo.getBoundingClientRect().bottom;
       var self = this;
 
       clearTimeout(scrollTimeout);
-      window.addEventListener('scroll', toMoveClouds);
 
       scrollTimeout = setTimeout(function() {
         if (demoBottomCoordinate <= 0) {
           self.setGameStatus(Verdict.PAUSE);
         }
         if (cloudsCoordinates <= 0) {
-          window.removeEventListener('scroll', toMoveClouds);
+          window.removeEventListener('scroll', self._onCloudsMove);
         } else {
-          window.addEventListener('scroll', toMoveClouds);
+          window.addEventListener('scroll', self._onCloudsMove);
         }
       }, THROTTLE_TIME);
-
-      function toMoveClouds() {
-        clouds.style.backgroundPositionX = scrolled + 'px';
-      }
     },
 
     /** @param {boolean} deactivated */
