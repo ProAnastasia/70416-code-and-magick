@@ -258,6 +258,7 @@ window.Game = (function() {
     this.canvas.height = container.clientHeight;
     this.container.appendChild(this.canvas);
     this.clouds = document.querySelector('.header-clouds');
+    this.clouds.style.backgroundPosition = 'top  ' + 0 + 'px';
 
     this.ctx = this.canvas.getContext('2d');
 
