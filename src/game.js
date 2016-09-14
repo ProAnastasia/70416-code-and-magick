@@ -269,7 +269,7 @@ window.Game = (function() {
 
     this._toThrottleScroll = utils.throttle(this._onScroll.bind(this), THROTTLE_TIME);
     window.addEventListener('scroll', this._toThrottleScroll);
-
+    this._onCloudsMove();
     this.setDeactivated(false);
   };
 
@@ -288,12 +288,13 @@ window.Game = (function() {
 
     _onScroll: function() {
       var cloudsBottomCoordinate = this.clouds.getBoundingClientRect().bottom;
-      var demoBottomCoordinate = demo.getBoundingClientRect();
+      var demoBottomCoordinate = demo.getBoundingClientRect().bottom;
       var self = this;
 
       if (demoBottomCoordinate <= 0) {
         self.setGameStatus(Verdict.PAUSE);
       }
+
       if (cloudsBottomCoordinate <= 0) {
         window.removeEventListener('scroll', self._onCloudsMove);
       } else {
