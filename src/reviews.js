@@ -13,6 +13,9 @@ var LOAD_REVIEWS_URL = '/api/reviews';
 
   var PAGE_SIZE = 3;
   var pageNumber = 0;
+  var defaultFilter = 'reviews-all';
+  var activeFilterName = 'activeFilter';
+  var activeFilter = localStorage.getItem(activeFilterName);
 
   moreReviews.addEventListener('click', function() {
     loadMoreReviews(pageNumber++);
@@ -20,13 +23,25 @@ var LOAD_REVIEWS_URL = '/api/reviews';
 
   reviewsFilter.addEventListener('change', function(evt) {
     if ((evt.target.type === 'radio')) {
+      var elemValue = evt.target.id;
       pageNumber = 0;
       reviewsContainer.innerHTML = '';
+      localStorage.setItem(activeFilterName, elemValue);
       loadMoreReviews(pageNumber++);
     }
   }, true);
 
   utils.toggleVisibility(reviewsFilter, true);
+
+  function toSetActiveFilter() {
+    if (activeFilter !== null) {
+      document.getElementById(activeFilter).checked = true;
+    } else {
+      document.getElementById(defaultFilter).checked = true;
+    }
+  }
+
+  window.addEventListener('load', toSetActiveFilter);
 
   function loadData(reviews) {
     if (reviews) {
