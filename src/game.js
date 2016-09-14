@@ -1,5 +1,7 @@
 'use strict';
 
+var utils = require('./utils');
+
 window.Game = (function() {
   /**
    * @const
@@ -244,19 +246,30 @@ window.Game = (function() {
    * @param {Element} container
    * @constructor
    */
+
+  var THROTTLE_TIME = 100;
+
+  var demo = document.querySelector('.demo');
+
   var Game = function(container) {
     this.container = container;
     this.canvas = document.createElement('canvas');
     this.canvas.width = container.clientWidth;
     this.canvas.height = container.clientHeight;
     this.container.appendChild(this.canvas);
+    this.clouds = document.querySelector('.header-clouds');
 
     this.ctx = this.canvas.getContext('2d');
 
     this._onKeyDown = this._onKeyDown.bind(this);
     this._onKeyUp = this._onKeyUp.bind(this);
     this._pauseListener = this._pauseListener.bind(this);
+    this._onScroll = this._onScroll.bind(this);
+    this._onCloudsMove = this._cloudsMove.bind(this);
 
+    this._toThrottleScroll = utils.throttle(this._onScroll.bind(this), THROTTLE_TIME);
+    window.addEventListener('scroll', this._toThrottleScroll);
+    this._onCloudsMove();
     this.setDeactivated(false);
   };
 
@@ -266,6 +279,28 @@ window.Game = (function() {
      * @type {Level}
      */
     level: INITIAL_LEVEL,
+
+    _cloudsMove: function() {
+      var scrolled = window.pageYOffset;
+
+      this.clouds.style.backgroundPositionX = scrolled + 'px';
+    },
+
+    _onScroll: function() {
+      var cloudsBottomCoordinate = this.clouds.getBoundingClientRect().bottom;
+      var demoBottomCoordinate = demo.getBoundingClientRect().bottom;
+      var self = this;
+
+      if (demoBottomCoordinate <= 0) {
+        self.setGameStatus(Verdict.PAUSE);
+      }
+
+      if (cloudsBottomCoordinate <= 0) {
+        window.removeEventListener('scroll', self._onCloudsMove);
+      } else {
+        window.addEventListener('scroll', self._onCloudsMove);
+      }
+    },
 
     /** @param {boolean} deactivated */
     setDeactivated: function(deactivated) {
@@ -733,6 +768,7 @@ window.Game = (function() {
     _initializeGameListeners: function() {
       window.addEventListener('keydown', this._onKeyDown);
       window.addEventListener('keyup', this._onKeyUp);
+      window.addEventListener('scroll', this._onScroll);
     },
 
     /** @private */
