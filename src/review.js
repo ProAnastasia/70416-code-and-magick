@@ -13,13 +13,9 @@ var Review = function(data) {
   this.quizAnswerYes = this.element.querySelector(elemYes);
   this.quizAnswerNo = this.element.querySelector(elemNo);
 
-  this.quizAnswerYes.onclick = function() {
-    this.chooseYes();
-  }.bind(this);
+  this.quizAnswerYes.onclick = this.chooseYes.bind(this);
 
-  this.quizAnswerNo.onclick = function() {
-    this.chooseNo();
-  }.bind(this);
+  this.quizAnswerNo.onclick = this.chooseNo.bind(this);
 };
 
 Review.prototype = {
