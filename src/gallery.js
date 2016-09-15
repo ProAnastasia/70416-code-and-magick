@@ -17,24 +17,22 @@ var Gallery = function(pictures) {
 };
 
 Gallery.prototype.show = function(num) {
-  var self = this;
 
   utils.toggleVisibility(this.galleryWrap, false);
   this.setActivePicture(num);
   this.previousImage.onclick = function() {
-    if (self.activePicture > 0) {
-      self.setActivePicture(self.activePicture - 1);
+    if (this.activePicture > 0) {
+      this.setActivePicture(this.activePicture - 1);
     }
+  }.bind(this);
 
-  };
   this.nextImage.onclick = function() {
-    if (self.activePicture < self.pictures.length - 1) {
-      self.setActivePicture(self.activePicture + 1);
+    if (this.activePicture < this.pictures.length - 1) {
+      this.setActivePicture(this.activePicture + 1);
     }
-  };
-  this.closeGallery.onclick = function() {
-    self.hide();
-  };
+  }.bind(this);
+
+  this.closeGallery.onclick = this.hide.bind(this);
 };
 
 Gallery.prototype.hide = function() {
