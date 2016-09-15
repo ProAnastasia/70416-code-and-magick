@@ -289,16 +289,15 @@ window.Game = (function() {
     _onScroll: function() {
       var cloudsBottomCoordinate = this.clouds.getBoundingClientRect().bottom;
       var demoBottomCoordinate = demo.getBoundingClientRect().bottom;
-      var self = this;
 
       if (demoBottomCoordinate <= 0) {
-        self.setGameStatus(Verdict.PAUSE);
+        this.setGameStatus(Verdict.PAUSE);
       }
 
       if (cloudsBottomCoordinate <= 0) {
-        window.removeEventListener('scroll', self._onCloudsMove);
+        window.removeEventListener('scroll', this._onCloudsMove);
       } else {
-        window.addEventListener('scroll', self._onCloudsMove);
+        window.addEventListener('scroll', this._onCloudsMove);
       }
     },
 
