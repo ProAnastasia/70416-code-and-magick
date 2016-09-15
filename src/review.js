@@ -12,14 +12,10 @@ var Review = function(data) {
   this.element = reviewItem(data);
   this.quizAnswerYes = this.element.querySelector(elemYes);
   this.quizAnswerNo = this.element.querySelector(elemNo);
-  var self = this;
 
-  this.quizAnswerYes.onclick = function() {
-    self.chooseYes();
-  };
-  this.quizAnswerNo.onclick = function() {
-    self.chooseNo();
-  };
+  this.quizAnswerYes.onclick = this.chooseYes.bind(this);
+
+  this.quizAnswerNo.onclick = this.chooseNo.bind(this);
 };
 
 Review.prototype = {
