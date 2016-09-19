@@ -37,8 +37,8 @@ Gallery.prototype.show = function(num) {
 
 Gallery.prototype.hide = function() {
   utils.toggleVisibility(this.galleryWrap, true);
-  this.previousImage.onclick = null;
   this.nextImage.onclick = null;
+  this.previousImage.onclick = null;
   this.closeGallery.onclick = null;
 };
 
